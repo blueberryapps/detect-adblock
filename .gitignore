@@ -1,0 +1,13 @@
+# build
+coverage/
+docs/
+lib/
+
+# node.js
+node_modules/
+npm-debug.log
+
+.DS_Store
+.idea
+
+yarn*.log
