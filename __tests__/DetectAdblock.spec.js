@@ -1,16 +1,26 @@
 /* eslint-disable react/no-multi-comp */
 import DetectAdblock, { checkAttributes as attributes } from '../src/DetectAdblock';
+// import { jsdom } from 'jsdom';
 
-describe('Detect adblock', () => {
+require('../setupFile');
+
+describe('Detect adblock', function() {
   let adblockPresent;
   let detector;
   let clock;
 
-  beforeEach(() => {
-    console.log(window.document.getElementsByTagName('div'));
+  beforeEach(function() {
+
+    // document.body.innerHTML = '<div id="page">Page</div>';
+    // const window = document.defaultView;
+
+    // Object.keys(document.defaultView).forEach((property) => {
+    //   if (typeof global[property] === 'undefined') {
+    //     global[property] = document.defaultView[property];
+    //   }
+    // });
 
     clock = jest.useFakeTimers();
-
     adblockPresent = false;
     detector = new DetectAdblock(500, () => {
       console.log('DETECTED');
@@ -21,27 +31,27 @@ describe('Detect adblock', () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(function() {
     clock.clearAllTimers();
   });
 
-  test('should detect ads when adblock is enabled and adds attribute "abp" to body', () => {
-    global.document.body.setAttribute('abp', 'true');
-    detector.startChecking(5);
-    clock.runTimersToTime(2000);
-    expect(adblockPresent).toBe(true);
-  });
+  // test('should detect ads when adblock is enabled and adds attribute "abp" to body', function() {
+  //   global.document.body.setAttribute('abp', 'true');
+  //   detector.startChecking(5);
+  //   clock.runTimersToTime(2000);
+  //   expect(adblockPresent).toBe(true);
+  // });
 
-  test('should detect ads when adblock is enabled and changes height/width of potential ads', () => {
-    global.document.getElementsByClassName('pub300x250')[0].setAttribute('style', 'width: 0');
-    detector.startChecking(5);
-    clock.runTimersToTime(2000);
-    expect(adblockPresent).toBe(true);
-  });
+  // test('should detect ads when adblock is enabled and changes height/width of potential ads', function() {
+  //   global.document.getElementsByClassName('pub300x250')[0].setAttribute('style', 'width: 0');
+  //   detector.startChecking(5);
+  //   clock.runTimersToTime(2000);
+  //   expect(adblockPresent).toBe(true);
+  // });
 
-  test('should detect ads when adblock is enabled and hides potential ads', () => {
-    global.document.getElementsByClassName('pub728x90')[0].setAttribute('style', 'display:none');
-    detector.startChecking(5);
+  test('should detect ads when adblock is enabled and hides potential ads', function() {
+    // global.document.getElementsByClassName('pub728x90')[0].setAttribute('style', 'display:none');
+    detector.startChecking(1);
     clock.runTimersToTime(2000);
     expect(adblockPresent).toBe(true);
   });
@@ -62,37 +72,37 @@ describe('Detect adblock', () => {
   // });
 });
 
-describe('DetectAttributes', () => {
-  const bait = {
-    offsetParent: 30,
-    offsetHeight: 10,
-    offsetLeft: 30,
-    offsetTop: 100,
-    offsetWidth: 50,
-    clientHeight: 100,
-    clientWidth: 100,
-  };
+// describe('DetectAttributes', () => {
+//   const bait = {
+//     offsetParent: 30,
+//     offsetHeight: 10,
+//     offsetLeft: 30,
+//     offsetTop: 100,
+//     offsetWidth: 50,
+//     clientHeight: 100,
+//     clientWidth: 100,
+//   };
 
-  test('should not detect adblock when element attributes are not changed', () => {
-    const result = DetectAdblock.checkAttributes(attributes, bait);
-    expect(result).toBe(false);
-  });
+//   test('should not detect adblock when element attributes are not changed', () => {
+//     const result = DetectAdblock.checkAttributes(attributes, bait);
+//     expect(result).toBe(false);
+//   });
 
-  test('should detect adblock when clientHeight is set to null', () => {
-    const clientHeightBait = { ...bait, clientHeight: null };
-    const result = DetectAdblock.checkAttributes(attributes, clientHeightBait);
-    expect(result).toBe(true);
-  });
+//   test('should detect adblock when clientHeight is set to null', () => {
+//     const clientHeightBait = { ...bait, clientHeight: null };
+//     const result = DetectAdblock.checkAttributes(attributes, clientHeightBait);
+//     expect(result).toBe(true);
+//   });
 
-  test('should not detect adblock when clientWidth is undefined', () => {
-    const clientWidthBait = { ...bait, clientWidth: undefined };
-    const result = DetectAdblock.checkAttributes(attributes, clientWidthBait);
-    expect(result).toBe(false);
-  });
+//   test('should not detect adblock when clientWidth is undefined', () => {
+//     const clientWidthBait = { ...bait, clientWidth: undefined };
+//     const result = DetectAdblock.checkAttributes(attributes, clientWidthBait);
+//     expect(result).toBe(false);
+//   });
 
-  test('should detect adblock when clientWidth is 0', () => {
-    const offsetParentBait = { ...bait, clientWidth: 0 };
-    const result = DetectAdblock.checkAttributes(attributes, offsetParentBait);
-    expect(result).toBe(true);
-  });
-});
+//   test('should detect adblock when clientWidth is 0', () => {
+//     const offsetParentBait = { ...bait, clientWidth: 0 };
+//     const result = DetectAdblock.checkAttributes(attributes, offsetParentBait);
+//     expect(result).toBe(true);
+//   });
+// });

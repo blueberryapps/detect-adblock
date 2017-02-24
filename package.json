@@ -9,7 +9,7 @@
     "clean": "./node_modules/.bin/rimraf lib",
     "version": "npm run build",
     "eslint": "eslint src/**",
-    "test": "jest",
+    "test": "jest --debug",
     "test:watch": "jest --watch"
   },
   "repository": {
@@ -48,6 +48,9 @@
     "rimraf": "^2.6.0"
   },
   "jest": {
-    "setupFiles" : ["<rootDir>/setupFile.js"]
+    "globals": {
+      "window": true,
+      "document": true
+    }
   }
 }

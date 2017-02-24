@@ -11,7 +11,6 @@ export default class DetectAdblock {
     this.onEnabled = enabledHandler;
     this.onDisabled = disabledHandler;
     this.timeout = timeout;
-
     this._insertAd();
   }
 
