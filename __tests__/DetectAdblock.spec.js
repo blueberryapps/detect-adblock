@@ -72,37 +72,37 @@ describe('Detect adblock', function() {
   // });
 });
 
-// describe('DetectAttributes', () => {
-//   const bait = {
-//     offsetParent: 30,
-//     offsetHeight: 10,
-//     offsetLeft: 30,
-//     offsetTop: 100,
-//     offsetWidth: 50,
-//     clientHeight: 100,
-//     clientWidth: 100,
-//   };
+describe('DetectAttributes', () => {
+  const bait = {
+    offsetParent: 30,
+    offsetHeight: 10,
+    offsetLeft: 30,
+    offsetTop: 100,
+    offsetWidth: 50,
+    clientHeight: 100,
+    clientWidth: 100,
+  };
 
-//   test('should not detect adblock when element attributes are not changed', () => {
-//     const result = DetectAdblock.checkAttributes(attributes, bait);
-//     expect(result).toBe(false);
-//   });
+  test('should not detect adblock when element attributes are not changed', () => {
+    const result = DetectAdblock.checkAttributes(attributes, bait);
+    expect(result).toBe(false);
+  });
 
-//   test('should detect adblock when clientHeight is set to null', () => {
-//     const clientHeightBait = { ...bait, clientHeight: null };
-//     const result = DetectAdblock.checkAttributes(attributes, clientHeightBait);
-//     expect(result).toBe(true);
-//   });
+  test('should detect adblock when clientHeight is set to null', () => {
+    const clientHeightBait = { ...bait, clientHeight: null };
+    const result = DetectAdblock.checkAttributes(attributes, clientHeightBait);
+    expect(result).toBe(true);
+  });
 
-//   test('should not detect adblock when clientWidth is undefined', () => {
-//     const clientWidthBait = { ...bait, clientWidth: undefined };
-//     const result = DetectAdblock.checkAttributes(attributes, clientWidthBait);
-//     expect(result).toBe(false);
-//   });
+  test('should not detect adblock when clientWidth is undefined', () => {
+    const clientWidthBait = { ...bait, clientWidth: undefined };
+    const result = DetectAdblock.checkAttributes(attributes, clientWidthBait);
+    expect(result).toBe(false);
+  });
 
-//   test('should detect adblock when clientWidth is 0', () => {
-//     const offsetParentBait = { ...bait, clientWidth: 0 };
-//     const result = DetectAdblock.checkAttributes(attributes, offsetParentBait);
-//     expect(result).toBe(true);
-//   });
-// });
+  test('should detect adblock when clientWidth is 0', () => {
+    const offsetParentBait = { ...bait, clientWidth: 0 };
+    const result = DetectAdblock.checkAttributes(attributes, offsetParentBait);
+    expect(result).toBe(true);
+  });
+});
