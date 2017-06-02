@@ -1,4 +1,4 @@
-# Detect AdBlock
+# Detect AdBlock [![Dependency Status](https://dependencyci.com/github/blueberryapps/detect-adblock/badge)](https://dependencyci.com/github/blueberryapps/detect-adblock)
 
 ```
 yarn add detect-adblock
