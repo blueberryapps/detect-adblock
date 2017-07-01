@@ -1,75 +1,46 @@
 /* eslint-disable react/no-multi-comp */
-import DetectAdblock, { checkAttributes as attributes } from '../src/DetectAdblock';
-// import { jsdom } from 'jsdom';
+import DetectAdblock, { attributes } from '../src/DetectAdblock';
 
-require('../setupFile');
-
-describe('Detect adblock', function() {
-  let adblockPresent;
-  let detector;
-  let clock;
-
-  beforeEach(function() {
-
-    // document.body.innerHTML = '<div id="page">Page</div>';
-    // const window = document.defaultView;
-
-    // Object.keys(document.defaultView).forEach((property) => {
-    //   if (typeof global[property] === 'undefined') {
-    //     global[property] = document.defaultView[property];
-    //   }
-    // });
-
-    clock = jest.useFakeTimers();
-    adblockPresent = false;
-    detector = new DetectAdblock(500, () => {
-      console.log('DETECTED');
-      adblockPresent = true;
+const startTest = callback =>
+  new Promise((resolve) => {
+    const x = new DetectAdblock(500, () => {
+      resolve(true);
     }, () => {
-      console.log('NOT DETECTED');
-      adblockPresent = false;
+      resolve(false);
     });
+    if (callback) callback();
+    x.startChecking(1);
   });
 
-  afterEach(function() {
-    clock.clearAllTimers();
+describe('Detect adblock', () => {
+  afterEach(() => {
+    global.document.body.removeAttribute('abp');
+    global.document.getElementsByClassName('pub728x90')[0].removeAttribute('style');
+    global.document.getElementsByClassName('pub728x90')[0].removeAttribute('class');
   });
 
-  // test('should detect ads when adblock is enabled and adds attribute "abp" to body', function() {
-  //   global.document.body.setAttribute('abp', 'true');
-  //   detector.startChecking(5);
-  //   clock.runTimersToTime(2000);
-  //   expect(adblockPresent).toBe(true);
-  // });
-
-  // test('should detect ads when adblock is enabled and changes height/width of potential ads', function() {
-  //   global.document.getElementsByClassName('pub300x250')[0].setAttribute('style', 'width: 0');
-  //   detector.startChecking(5);
-  //   clock.runTimersToTime(2000);
-  //   expect(adblockPresent).toBe(true);
-  // });
-
-  test('should detect ads when adblock is enabled and hides potential ads', function() {
-    // global.document.getElementsByClassName('pub728x90')[0].setAttribute('style', 'display:none');
-    detector.startChecking(1);
-    clock.runTimersToTime(2000);
-    expect(adblockPresent).toBe(true);
+  test('should detect ads when adblock is enabled and adds attribute "abp" to body', () => {
+    const changeSource = () => global.document.body.setAttribute('abp', 'true');
+    return startTest(changeSource).then(result => expect(result).toBe(true));
   });
 
-  // test('should not detect ads when adblock is not present', async (done) => {
-  //   const y = await new Promise(resolve => {
-  //     const x = new DetectAdblock(100, () => {
-  //       resolve('bbbbb');
-  //     }, () => {
-  //       resolve('hahaha');
-  //     });
-  //     x.startChecking(1);
-  //     // clock.runTimersToTime(2000);
-  //   });
+  test('should detect ads when adblock is enabled and changes height/width of potential ads', () => {
+    const changeSource = () => {
+      document.getElementsByClassName('pub300x250')[0].style.width = '0';
+    };
+    return startTest(changeSource).then(result => expect(result).toBe(true));
+  });
 
-  //   expect(y).toBe('hahaha');
-  //   done();
-  // });
+  test('should detect ads when adblock is enabled and hides potential ads', () => {
+    const changeSource = () => {
+      document.getElementsByClassName('pub728x90')[0].style.display = 'none';
+    };
+    return startTest(changeSource).then(result => expect(result).toBe(true));
+  });
+
+  test('should not detect ads when adblock is not present', () =>
+    startTest().then(result => expect(result).toBe(false))
+  );
 });
 
 describe('DetectAttributes', () => {
