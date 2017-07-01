@@ -1,7 +1,7 @@
-export const checkAttributes = ['offsetParent', 'offsetHeight', 'offsetLeft', 'offsetTop', 'offsetWidth', 'clientHeight', 'clientWidth'];
+export const attributes = ['offsetParent', 'offsetHeight', 'offsetLeft', 'offsetTop', 'offsetWidth', 'clientHeight', 'clientWidth'];
 
 const baitClass = 'pub300x250 pub300x250m pub728x90 text-ad textAd textad textads text-ads text-ad-links';
-const baitStyle = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -1000px !important;';
+const baitStyle = 'width: 1000px !important; height: 1000px !important; position: absolute !important; left: -10000px !important; top: -1000px !important; display: block !important';
 const defaultCount = 5;
 const defaultHandler = () => {};
 const defaultTimeout = 1000;
@@ -38,25 +38,24 @@ export default class DetectAdblock {
   }
 
   static checkAttributes = (attributes, bait) =>
-    attributes.reduce((prev, cur) =>
-      prev || ((bait[cur] === undefined) ? false : !bait[cur]),
-    false);
+    attributes.reduce((prev, cur) => prev || ((bait[cur] === undefined) ? false : !bait[cur]),
+  false);
 
   _check() {
-
     if (!this._bait) {
       this._insertAd();
     }
 
     if (window.document.body.getAttribute('abp') ||
-      DetectAdblock.checkAttributes(checkAttributes, this._bait)) {
+      DetectAdblock.checkAttributes(attributes, this._bait)) {
       return true;
     }
 
     if (window.getComputedStyle !== undefined) {
       const baitTemp = window.getComputedStyle(this._bait, null);
-      if (baitTemp && (baitTemp.getPropertyValue('display') === 'none' ||
-          baitTemp.getPropertyValue('visibility') === 'hidden')) {
+      if (baitTemp &&
+          (baitTemp.getPropertyValue('display') === 'none' || baitTemp.getPropertyValue('visibility') === 'hidden')
+        ) {
         return true;
       }
     }
@@ -75,9 +74,8 @@ export default class DetectAdblock {
     const bait = window.document.createElement('div');
     bait.setAttribute('class', baitClass);
     bait.setAttribute('style', baitStyle);
-    const insertionPlace = window.document.getElementById('page');
-    insertionPlace.parentNode.insertBefore(bait, insertionPlace);
-    this._bait = window.document.getElementsByClassName('pub300x250')[0];
+    const insertionPlace = window.document.getElementsByTagName('body')[0];
+    this._bait = insertionPlace.appendChild(bait);
   }
 
   _removeAd() {

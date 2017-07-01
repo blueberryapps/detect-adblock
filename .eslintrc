@@ -18,7 +18,8 @@
     "new-cap": [2, {"capIsNew": false, "newIsCap": true}], // For Record() etc.
     "no-floating-decimal": 0, // .5 is just fine.
     "no-shadow": 0, // Shadowing is a nice language feature.
-    "no-use-before-define": 0, // Enable to define styles after using them in component.
+    "no-use-before-define": 0, // Enable to define styles after using them in component.,
+    "no-underscore-dangle": 0
   },
   "globals": {
     "after": false,
@@ -36,7 +37,9 @@
     "module": false,
     "process": false,
     "require": false,
-    "window": false
+    "window": false,
+    "test": false,
+    "document": false,
   },
   "settings": {
     "import/ignore": [

@@ -1,6 +1,6 @@
 {
   "name": "detect-adblock",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Implements detecting of adblockers in browser",
   "main": "lib/index.js",
   "scripts": {
@@ -42,15 +42,18 @@
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "jest": "^19.0.1",
+    "jest": "20.0.4",
     "jest-enzyme": "^2.1.2",
-    "jsdom": "9.9.1",
+    "jsdom": "11.0.0",
     "rimraf": "^2.6.0"
   },
   "jest": {
     "globals": {
       "window": true,
       "document": true
-    }
+    },
+    "setupFiles": [
+      "./setupFile.js"
+    ]
   }
 }

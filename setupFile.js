@@ -1,39 +1,50 @@
-import { jsdom } from 'jsdom';
+import { JSDOM } from 'jsdom'; // eslint-disable-line import/no-extraneous-dependencies
+import { attributes } from './src/DetectAdblock';
 
 process.env.IS_BROWSER = true;
 
 const documentHTML = '<!doctype html><html><head></head><body><div id="page">Page</div></body></html>';
-global.document = jsdom(documentHTML);
+const dom = new JSDOM(documentHTML);
+
+global.document = dom;
 global.window = document.defaultView;
 
-// Object.keys(document.defaultView).forEach((property) => {
-//   if (typeof global[property] === 'undefined') {
-//     global[property] = document.defaultView[property];
-//   }
-// });
+const checkHeight = (ctx) => {
+  const height = window.getComputedStyle(ctx).height;
+  return height === null || typeof height === 'undefined' || height !== '0px';
+};
 
-// global.navigator = {
-//   userAgent: 'node.js'
-// };
+const checkWidth = (ctx) => {
+  const width = window.getComputedStyle(ctx).width;
+  return width === null || typeof width === 'undefined' || width !== '0px';
+};
 
-// console.log('object keys', Object.keys(document.defaultView));
-// console.log('object keys', global.document.body.innerHTML);
+const checkDisplay = (ctx) => {
+  const display = window.getComputedStyle(ctx).display;
+  return display === null || typeof display === 'undefined' || display !== 'none';
+};
 
+const attributesMappings = {
+  clientHeight: checkHeight,
+  clientWidth: checkWidth,
+  offsetHeight: checkHeight,
+  offsetLeft: checkWidth,
+  offsetParent: checkDisplay,
+  offsetTop: checkHeight,
+  offsetWidth: checkWidth,
+};
 
-// window.document = jsdom('<html><body><div id="page">Page</div></body></html>');
-//window = document.defaultView;
+const properties = attributes.reduce((prev, cur) =>
+  ({
+    ...prev,
+    [cur]: {
+      get: function get() {
+        return attributesMappings[cur](this);
+      },
+      configurable: true,
+    }
+  })
+, {});
 
-Object.defineProperties(window.HTMLElement.prototype, {
-  offsetLeft: {
-    get: function() { return parseFloat(window.getComputedStyle(this).marginLeft) || 0; }
-  },
-  offsetTop: {
-    get: function() { return parseFloat(window.getComputedStyle(this).marginTop) || 0; }
-  },
-  offsetHeight: {
-    get: function() { return parseFloat(window.getComputedStyle(this).height) || 0; }
-  },
-  offsetWidth: {
-    get: function() { return parseFloat(window.getComputedStyle(this).width) || 0; }
-  }
-});
+Object.defineProperties(window.HTMLDivElement.prototype, properties);
+Object.defineProperties(window.HTMLBodyElement.prototype, properties);

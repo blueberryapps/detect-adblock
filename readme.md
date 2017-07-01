@@ -6,23 +6,23 @@ yarn add detect-adblock
 
 DetectAdbblock is a library which recognizes using of ad blocker in a browser. You can use it in case you want to show advertisment towards users or just run important script which are beign blocked.
 
-#Motivation
+# Motivation
 
 This library is inspired by [BlockAdBlock project](https://github.com/sitexw/BlockAdBlock). Main changes are that this library is simplified, completely written in ES6 and contains tests written in Jest.
 
-#How to use
+# How to use
 
 To use Detect AdBlock you need just to import `DetectAdblock` class to your project and then use it as a standard javascript class.
 
-##Constructor
+## Constructor
 * `timeout` specifies number of `ms` to run check for, default is 1000.
 * `enabledHandler` is a callback which is called when no ad block is recognized.
 * `disabledHandler` is a callback which is called when no ad block is not recognized.
 
-##Methods
+## Methods
 * `startChecking(count)` is a method which starts checking for ad blockers. Count is the number of checks in one run. Default is 5.
 
-#Example
+# Example
 
 ```js
 import DetectAdblock from '@blueberry/detect-adblock'
@@ -40,7 +40,7 @@ const check = () => {
 };
 ```
 
-#Browser compatibility
+# Browser compatibility
 The package should work in all modern browsers including IE8+.
 
 ## Made with love by
