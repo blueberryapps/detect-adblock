@@ -15,16 +15,10 @@ export default class DetectAdblock {
   }
 
   startChecking(count = defaultCount) {
-    if (!process.env.IS_BROWSER) {
-      return;
-    }
+    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
     const check = this._check();
 
-    if (check) {
-      this.onEnabled();
-    } else {
-      this.onDisabled();
-    }
+    check ? this.onEnabled() : this.onDisabled();
 
     if (count > 0) {
       this._timeoutIdentifier = setTimeout(() => this.startChecking(count - 1), this.timeout);
@@ -42,9 +36,7 @@ export default class DetectAdblock {
   false);
 
   _check() {
-    if (!this._bait) {
-      this._insertAd();
-    }
+    if (!this._bait) this._insertAd();
 
     if (window.document.body.getAttribute('abp') ||
       DetectAdblock.checkAttributes(attributes, this._bait)) {
@@ -64,12 +56,8 @@ export default class DetectAdblock {
   }
 
   _insertAd() {
-    if (!process.env.IS_BROWSER) {
-      return;
-    }
-    if (this._bait) {
-      return;
-    }
+    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
+    if (this._bait) return;
 
     const bait = window.document.createElement('div');
     bait.setAttribute('class', baitClass);
@@ -79,12 +67,8 @@ export default class DetectAdblock {
   }
 
   _removeAd() {
-    if (this._timeoutIdentifier) {
-      clearTimeout(this._timeoutIdentifier);
-    }
-    if (!process.env.IS_BROWSER) {
-      return;
-    }
+    if (this._timeoutIdentifier) clearTimeout(this._timeoutIdentifier);
+    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
     window.document.body.removeChild(this._bait);
     this._bait = null;
   }
