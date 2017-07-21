@@ -2,7 +2,7 @@
   "name": "detect-adblock",
   "version": "0.0.1",
   "description": "Implements detecting of adblockers in browser",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "npm run clean && npm run build:lib",
     "build:lib": "babel src --out-dir lib",
