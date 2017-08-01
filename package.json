@@ -10,7 +10,8 @@
     "version": "npm run build",
     "eslint": "eslint src/**",
     "test": "jest --debug",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
