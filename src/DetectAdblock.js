@@ -15,10 +15,14 @@ export default class DetectAdblock {
   }
 
   startChecking(count = defaultCount) {
-    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
+    if (typeof window === 'undefined') return;
     const check = this._check();
 
-    check ? this.onEnabled() : this.onDisabled();
+    if (check) {
+      this.onEnabled();
+    } else {
+      this.onDisabled();
+    }
 
     if (count > 0) {
       this._timeoutIdentifier = setTimeout(() => this.startChecking(count - 1), this.timeout);
@@ -56,7 +60,7 @@ export default class DetectAdblock {
   }
 
   _insertAd() {
-    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
+    if (typeof window === 'undefined') return;
     if (this._bait) return;
 
     const bait = window.document.createElement('div');
@@ -68,7 +72,7 @@ export default class DetectAdblock {
 
   _removeAd() {
     if (this._timeoutIdentifier) clearTimeout(this._timeoutIdentifier);
-    if (typeof process !== 'undefined') if (!process.env.IS_BROWSER) return;
+    if (typeof window === 'undefined') return;
     window.document.body.removeChild(this._bait);
     this._bait = null;
   }

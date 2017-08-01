@@ -2,7 +2,7 @@
   "name": "detect-adblock",
   "version": "0.0.1",
   "description": "Implements detecting of adblockers in browser",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && npm run build:lib",
     "build:lib": "babel src --out-dir lib",
@@ -10,7 +10,8 @@
     "version": "npm run build",
     "eslint": "eslint src/**",
     "test": "jest --debug",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
